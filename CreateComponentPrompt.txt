@@ -1,0 +1,232 @@
+I'm building a NextJS portfolio creation system where users fill out forms to generate their portfolio websites. I need you to create a complete **CreatePortfolio.tsx** component with all its sub-components using Tailwind CSS with a modern dark theme.
+
+**PROJECT CONTEXT:**
+- Users go through a multi-step form to create their portfolio data
+- Data gets sent to `/api/data` POST endpoint
+- The system has 2 existing themes, and this is for data collection
+- All components should be dark-themed, modern, and user-friendly
+
+**MAIN COMPONENT STRUCTURE:**
+CreatePortfolio.tsx (Main Container)
+├── FormProgress.tsx (Progress indicator)
+├── FormSteps/ (Folder containing all step components)
+│   ├── BasicInfoStep.tsx
+│   ├── SocialLinksStep.tsx
+│   ├── AboutStep.tsx
+│   ├── SkillsStep.tsx
+│   ├── StatsStep.tsx
+│   ├── ProjectsStep.tsx
+│   ├── ExperienceStep.tsx
+│   ├── EducationStep.tsx
+│   └── ContactStep.tsx
+├── FormPreview.tsx (Preview before submission)
+├── FormNavigation.tsx (Next/Previous buttons)
+└── FormSubmission.tsx (Loading/Success states)
+
+**TECHNICAL REQUIREMENTS:**
+- Use NextJS 14+ with "use client" directive
+- Tailwind CSS for styling (dark theme with good UX)
+- React hooks (useState, useEffect) for state management
+- Form validation before submission (client-side validation matching Zod schema)
+- Loading states and error handling
+- Responsive design
+- Smooth animations and transitions
+
+**ZOD VALIDATION SCHEMA (for reference):**
+```javascript
+const createDataSchema = z.object({
+  owner: stringSchema, // handled by backend
+  name: stringSchema, // REQUIRED
+  slug: stringSchema, // REQUIRED
+  tagLine: stringSchema.optional(),
+  description: stringSchema.optional(),
+  location: stringSchema, // REQUIRED
+  social: socialSchema, // REQUIRED
+  about: stringSchema, // REQUIRED
+  skills: z.array(z.object({
+    name: stringSchema, // REQUIRED
+    level: z.number() // REQUIRED
+  })).optional(),
+  stats: z.array(z.object({
+    value: stringSchema, // REQUIRED
+    label: stringSchema // REQUIRED
+  })).optional(),
+  projects: z.array(z.object({
+    title: stringSchema, // REQUIRED
+    description: stringSchema.optional(),
+    image: stringSchema.optional(),
+    tech: z.array(z.string()), // REQUIRED array
+    category: stringSchema, // REQUIRED
+    github: stringSchema.optional(),
+    demo: stringSchema.optional(),
+    featured: z.boolean().optional()
+  })), // REQUIRED array (can be empty)
+  experience: z.array(z.object({
+    position: stringSchema, // REQUIRED
+    company: stringSchema, // REQUIRED
+    duration: stringSchema, // REQUIRED
+    description: stringSchema.optional()
+  })), // REQUIRED array (can be empty)
+  education: z.array(z.object({
+    degree: stringSchema, // REQUIRED
+    school: stringSchema, // REQUIRED
+    year: stringSchema, // REQUIRED
+    cgpa: stringSchema.optional()
+  })), // REQUIRED array (can be empty)
+  contact: z.object({
+    email: emailSchema, // REQUIRED, valid email format
+    location: stringSchema, // REQUIRED
+    social: socialSchema // REQUIRED
+  })
+})
+DETAILED COMPONENT BREAKDOWN:
+1. CreatePortfolio.tsx (Main Container)
+
+Manages overall form state using useState
+Handles current step navigation (currentStep state)
+Contains form data state object matching the schema
+Handles step validation before proceeding
+Manages form submission to API
+Renders current step component based on currentStep
+Dark theme container with proper layout
+
+2. FormProgress.tsx
+
+Visual progress indicator showing current step
+Progress bar with percentage completion
+Step names with completed/current/upcoming states
+Responsive design for mobile/desktop
+
+3. BasicInfoStep.tsx
+
+Form fields: name*, slug*, tagLine, description, location*
+Auto-generate slug from name suggestion
+Real-time validation with error messages
+Required field indicators (red asterisk)
+
+4. SocialLinksStep.tsx
+
+Form fields: social.github, social.linkedIn, social.mail
+URL validation for social links
+Optional fields but at least one recommended
+
+5. AboutStep.tsx
+
+Textarea for about* (required)
+Character count indicator (suggested 3-4 lines)
+Rich text formatting hints
+
+6. SkillsStep.tsx
+
+Dynamic array management for skills
+Add/remove skill functionality
+Each skill: name* + level* (1-100 slider)
+Visual skill level indicators
+Optional array (can be empty)
+
+7. StatsStep.tsx
+
+Dynamic array management for stats
+Add/remove stat functionality
+Each stat: value* + label*
+Examples: "3+ Projects", "2 Years Experience"
+Optional array (can be empty)
+
+8. ProjectsStep.tsx (Most Complex)
+
+Dynamic array management for projects
+Add/remove project functionality
+Each project fields: title*, description, image, tech*, category*, github, demo, featured
+Tech array management (add/remove tags)
+Category dropdown/select
+Featured project toggle
+Image upload placeholder (URL input for now)
+Required array but can be empty
+
+9. ExperienceStep.tsx
+
+Dynamic array management for experience
+Add/remove experience functionality
+Each experience: position*, company*, duration*, description
+Date picker or text input for duration
+Required array but can be empty
+
+10. EducationStep.tsx
+
+Dynamic array management for education
+Add/remove education functionality
+Each education: degree*, school*, year*, cgpa
+CGPA optional field
+Required array but can be empty
+
+11. ContactStep.tsx
+
+Form fields: contact.email*, contact.location*, contact.social*
+Email validation
+Social links (github, linkedIn, mail)
+All fields required
+
+12. FormPreview.tsx
+
+Display all entered data in a formatted preview
+Organized sections matching the form steps
+Edit buttons to go back to specific steps
+Final review before submission
+
+13. FormNavigation.tsx
+
+Next/Previous buttons
+Step validation before allowing next
+Different states: Next, Review, Submit
+Loading states during transitions
+
+14. FormSubmission.tsx
+
+API call to /api/data POST
+Loading spinner during submission
+Success message with redirect option
+Error handling with specific messages
+Retry functionality on failure
+
+VALIDATION RULES:
+
+Mark required fields with red asterisk (*)
+Validate email format in contact section
+Don't allow proceeding if current step has validation errors
+For arrays: validate required fields within items when added
+Slug should be URL-friendly
+Level in skills: 1-100 range
+Show validation errors immediately on blur/change
+
+DESIGN REQUIREMENTS:
+
+Dark theme (gray-900 background, gray-800 cards)
+Modern glassmorphism effects
+Smooth transitions and hover effects
+Mobile-responsive design
+Clear visual hierarchy
+Accessible form elements
+Loading animations
+Error/success state styling
+
+API INTEGRATION:
+
+POST to /api/data
+Requires NextAuth session
+Handle responses: 201 (success), 409 (existing), 400 (validation), 401 (auth)
+Show appropriate messages for each response
+
+STEP-BY-STEP DEVELOPMENT APPROACH:
+
+Start with CreatePortfolio.tsx main container
+Create FormProgress.tsx for navigation
+Build each step component one by one (BasicInfoStep → ContactStep)
+Add FormPreview.tsx for final review
+Implement FormSubmission.tsx with API integration
+Add FormNavigation.tsx with validation logic
+Polish styling and animations
+Test complete flow
+
+USER FLOW:
+BasicInfo → SocialLinks → About → Skills → Stats → Projects → Experience → Education → Contact → Preview → Submit
+When you start, ask me which component to create first from this list, then build them systematically with proper TypeScript interfaces, Tailwind styling, and validation logic.
