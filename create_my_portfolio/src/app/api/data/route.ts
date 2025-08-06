@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     console.log('error : ',error);
     
     return NextResponse.json(
-      new ApiResponse(false, error?.message??"Server Error"), {
+      new ApiResponse(false, error?.message??"Server Error",null,error), {
       status: 500
     }
     )
