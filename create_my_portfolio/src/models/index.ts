@@ -30,6 +30,8 @@ const  userSchema =new Schema({
     type:String,
     default:"Aurora"
   }
+},{
+  timestamps:true
 })
 
 userSchema.pre("save",async function(next){
@@ -180,6 +182,8 @@ const dataSchema = new Schema({
     },
     social:socialSchema
   }
+},{
+  timestamps:true
 })
 
 export const Data =mongoose.models.Data || mongoose.model('Data',dataSchema)
