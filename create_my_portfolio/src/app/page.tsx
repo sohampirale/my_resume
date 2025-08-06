@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions"; 
 import { getDataOfUserWithUserId } from "@/services/data.services";
 import connectDB from "@/lib/connectDB";
 import Link from "next/link";

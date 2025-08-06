@@ -6,7 +6,7 @@ import { Data } from "@/models";
 import { createDataSchema, stringSchema } from "@/schemas";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: NextRequest) {
   try {
