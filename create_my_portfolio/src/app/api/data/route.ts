@@ -4,7 +4,9 @@ import ApiResponse from "@/lib/ApiResponse";
 import connectDB from "@/lib/connectDB";
 import { Data } from "@/models";
 import { createDataSchema, stringSchema } from "@/schemas";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,8 +37,6 @@ export async function POST(req: NextRequest) {
 
     const data = parsed.data;
 
-
-    //:TODO  add check whether data of that user already exists or not after adding nextAuth -- considering it does not right now
     const existingData = await Data.findOne({
       owner:session.user._id
     })
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const createdData = await Data.create(data)
     console.log('created data : ', createdData);
 
-    if (createdData) {
+    if (!createdData) {
       return NextResponse.json(
         new ApiResponse(false, 'Failed to upload your data', createdData), {
         status: 400
@@ -67,6 +67,8 @@ export async function POST(req: NextRequest) {
     )
 
   } catch (error) {
+    console.log('error : ',error);
+    
     return NextResponse.json(
       new ApiResponse(false, error?.message??"Server Error"), {
       status: 500

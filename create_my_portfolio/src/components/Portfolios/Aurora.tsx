@@ -68,7 +68,7 @@ const Hero = ({ name, title, description, location, avatar, social }) => {
           </div>
 
           {/* Description */}
-          <p className="text-base text-gray-300 max-w-xl mb-6 leading-relaxed">
+          <p className="text-base text-gray-300 max-w-xl mb-6 leading-relaxed break-words whitespace-pre-line">
             {description || 'Passionate developer creating amazing digital experiences with modern technologies.'}
           </p>
 
@@ -124,7 +124,7 @@ const About = ({ about, skills, stats }) => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* About Text */}
           <div className="space-y-6">
-            <p className="text-gray-300 text-lg leading-relaxed">
+             <p className="text-gray-300 text-lg leading-relaxed break-words whitespace-pre-line">
               {about}
             </p>
             

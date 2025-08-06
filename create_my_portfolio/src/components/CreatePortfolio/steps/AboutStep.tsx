@@ -241,7 +241,11 @@ export default function AboutStep({ formData, updateFormData }) {
           </h4>
           <div className="bg-gray-800/50 rounded-lg p-4">
             <h5 className="text-white font-semibold mb-2">About</h5>
-            <p className="text-gray-300 leading-relaxed">{localData.about}</p>
+            <p className="text-gray-300 leading-relaxed break-words whitespace-pre-line">
+              done!
+            {localData.about}
+          </p>
+
           </div>
         </div>
       )}
