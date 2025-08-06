@@ -28,7 +28,7 @@ const  userSchema =new Schema({
   },
   portfolioCategory:{
     type:String,
-    default:"1"
+    default:"Aurora"
   }
 })
 
