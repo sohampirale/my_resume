@@ -58,6 +58,13 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const user = await User.findOne({
+      _id:session.user._id
+    })
+
+    user.hasPortfolio=true;
+    await user.save()
+
     return NextResponse.json(
       new ApiResponse(true, 'Your data added successfully', createdData), {
       status: 201
