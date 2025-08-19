@@ -127,8 +127,7 @@ export default async function MainPage() {
             </div>
           </div>
         </div>
-          <p>LOgout btn</p>
-              <LogoutButton/>
+        <LogoutButton/>
       </div>
     );
   }

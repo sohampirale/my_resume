@@ -4,7 +4,7 @@ import { createDataSchema, stringSchema } from "@/schemas";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/lib/authOptions";
-import { Data } from "@/models";
+import { Data, User } from "@/models";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,6 +40,8 @@ export async function POST(req: NextRequest) {
     })
 
     if(existingData){
+      console.log('existing data : ',existingData);
+      
       return NextResponse.json(
         new ApiResponse(false, 'You already have created resume'), {
           status: 409
